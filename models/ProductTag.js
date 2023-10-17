@@ -1,6 +1,6 @@
 const { Model, DataTypes } = require('sequelize');
 
-const sequelize = require('../config/connection');
+const db= require('../config/connection');
 
 class ProductTag extends Model { }
 
@@ -28,7 +28,7 @@ ProductTag.init(
     }
   },
   {
-    sequelize,
+    sequelize: db,
     timestamps: false,
     freezeTableName: true,
     underscored: true,

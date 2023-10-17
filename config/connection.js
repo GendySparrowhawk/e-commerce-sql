@@ -1,5 +1,5 @@
-require('dotenv').config();
-
+path = require('path')
+require('dotenv').config(path.join(__dirname, '../.env'));
 const Sequelize = require('sequelize');
 
 const sequelize = process.env.JAWSDB_URL
