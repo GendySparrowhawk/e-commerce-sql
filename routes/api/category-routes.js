@@ -23,12 +23,12 @@ router.get('/:id', async (req, res) => {
   try {
     const categoryId = req.params.id;
     const category = await Category.findOne({
-      where: {id: categoryId},
+      where: { id: categoryId },
       include: {
         model: Product
       }
-    })
-    res.json(category);
+    });
+    res.send(category);
   } catch (err) {
     console.error('COuld not find a product with that id', err)
     res.status(500).json({ error: 'Internal Server Error' })
@@ -40,20 +40,49 @@ router.post('/', async (req, res) => {
   try {
     const categoryData = await req.body;
 
-    const newCategory =  await Category.create({
+    const newCategory = await Category.create({
       category_name: categoryData.category_name
-    })
+    });
+    res.json(newCategory);
   } catch (err) {
     console.error('failed to add category', err)
+    res.status(500).json({ error: 'Internal Server Error' })
   }
 });
 
 // update a category by its `id` value
-router.put('/:id', (req, res) => {
+router.put('/:id', async (req, res) => {
+  try {
+    const categoryId = req.params.id;
+    const newName = req.body;
+    console.log(req.body)
+
+
+    const newCategory = await Category.update(
+      { category_name: newName },
+      { where: { id: categoryId } }
+    );
+    res.json(newCategory)
+
+  } catch (err) {
+    console.error('failed to update category', err)
+    res.status(500).json({ error: 'Internal Server Error' })
+  }
 });
 
-router.delete('/:id', (req, res) => {
-  // delete a category by its `id` value
+// delete product by id
+router.delete('/:id', async (req, res) => {
+  try {
+    const productId = req.params.id;
+
+    const deleted = await Category.destroy({
+      where: { id: productId }
+    })
+    res.json(deleted)
+  } catch (err) {
+    console.error('failed to delete category', err)
+    res.status(500).json({ error: 'Internal Server Error' })
+  }
 });
 
 module.exports = router;
