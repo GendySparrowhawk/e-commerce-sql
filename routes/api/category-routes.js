@@ -54,12 +54,12 @@ router.post('/', async (req, res) => {
 router.put('/:id', async (req, res) => {
   try {
     const categoryId = req.params.id;
-    const newName = req.body;
-    console.log(req.body)
+    const { category_name } = req.body;
+
 
 
     const newCategory = await Category.update(
-      { category_name: newName },
+      { category_name: category_name },
       { where: { id: categoryId } }
     );
     res.json(newCategory)
@@ -70,17 +70,17 @@ router.put('/:id', async (req, res) => {
   }
 });
 
-// delete product by id
+
 router.delete('/:id', async (req, res) => {
   try {
-    const productId = req.params.id;
+    const categoryId = req.params.id;
 
     const deleted = await Category.destroy({
-      where: { id: productId }
+      where: { id: categoryId }
     })
     res.json(deleted)
   } catch (err) {
-    console.error('failed to delete category', err)
+    console.error('Those who can destroy a thing truly posses it.', err)
     res.status(500).json({ error: 'Internal Server Error' })
   }
 });
